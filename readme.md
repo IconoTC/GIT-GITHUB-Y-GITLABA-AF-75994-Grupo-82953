@@ -8,19 +8,6 @@
 ## Contenidos
 
 - Introducción
-- Quick Start
-- Aprendiendo a referenciar revisiones y paths
-- Herramientas para preparar un buen commit en cualquier situación
-- Rescribiendo la historia
-- Trabajando en paralelo
-- Utilidades
-- Configuracion de git
-- Subproyectos
-- Integración con otras herramientas y entornos
-- Buenas prácticas
-
-
-- Introducción
   - Instalación
   - Gestión de un repositorio
   - GUI’s
@@ -66,4 +53,18 @@
   - Construir la imagen con Docker
   - Secretos
 
-Desarrollo del curso en la carpeta Oficial -> [repo]()
+Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/GIT-GITHUB-Y-GITLABA-AF-75994-Grupo-82953)
+
+Otros cursos en la plataforma
+
+- Introducción
+- Quick Start
+- Aprendiendo a referenciar revisiones y paths
+- Herramientas para preparar un buen commit en cualquier situación
+- Rescribiendo la historia
+- Trabajando en paralelo
+- Utilidades
+- Configuracion de git
+- Subproyectos
+- Integración con otras herramientas y entornos
+- Buenas prácticas
