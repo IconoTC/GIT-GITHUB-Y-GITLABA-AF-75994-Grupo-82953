@@ -66,6 +66,7 @@
       - [Advertencia](#advertencia)
       - [git command --amend](#git-command---amend)
       - [git checkout](#git-checkout)
+        - [Nuevos comandos git switch y git restore](#nuevos-comandos-git-switch-y-git-restore)
         - [git checkout a nivel de archivo](#git-checkout-a-nivel-de-archivo)
   - [Día 3](#día-3)
     - [REESCRIBIENDO LA HISTORIA (2)](#reescribiendo-la-historia-2)
@@ -353,13 +354,14 @@ Git es una herramienta de línea de comandos desarrollada inicialmente para el B
 
 Sin embargo, Git puede utilizarse en cualquier terminal de Windows, como el **cmd** o el **PowerShell**. Para ello, es necesario ajustar el path de Windows para que el ejecutable de Git esté disponible en todas lgit
 Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
-```
+
+````
 
 El siguiente paso es instalar el módulo de posh-git con el comando
 
 ```shell
 Install-Module posh-git -Scope CurrentUser -Force
-```
+````
 
 Finalmente hay que añadir la importación del módulo en el fichero de configuración de PowerShell, que se encuentra en el directorio de usuario en el fichero `Microsoft.PowerShell_profile.ps1`. Para ello, se pueden utilizar los comandos
 
@@ -1534,7 +1536,7 @@ O la opción moderna, recomendada en el git status
 git restore --staged <file>
 ```
 
-git restore es un nuevo comando que reproduce una parte de la funcionalidad de git checkout: recover an earlier commit.
+git restore es un **nuevo comando** que reproduce una parte de la funcionalidad de git checkout: recover an earlier commit.
 
 Una variación de git reset permite eliminar un archivo de la staging area y enviando al directorio de trabajo su estado en el último commit
 
@@ -1542,7 +1544,7 @@ Una variación de git reset permite eliminar un archivo de la staging area y env
 git reset HEAD <file>
 ```
 
-Por otra parte, el comportamiento de git checkout con ficheros trazados por git (tracked) es un poco diferente
+Por otra parte, el comportamiento de git checkout con ficheros trazados por git (tracked) es un poco diferente, como veremos más adelante
 
 - git checkout -- path: el path se toma como un fichero o directorio, si es un directorio, significa todos los ficheros dentro de ese directorio, recursivamente, y Git copia la copia actual del fichero tal como se encuentra en el índice a su árbol de trabajo.
 - git checkout HEAD -- path: el path se toma en la misma forma que antes, y Git copia la copia actual del fichero tal como se encuentra en el commit HEAD al índice y al árbol de trabajo.
@@ -1791,18 +1793,40 @@ git switch <branch>
 git checkout <branch>
 ```
 
+##### Nuevos comandos git switch y git restore
+
+Git 2.23 (Agosto 2019) introdujo dos nuevos comandos, `git switch` y `git restore`, que dividen la funcionalidad de `git checkout` en dos comandos más específicos y fáciles de entender.
+
+- `git switch`: se utiliza para cambiar de rama o crear una nueva rama
+- `git restore`: se utiliza para restaurar archivos en el directorio de trabajo desde el área de preparación o desde un commit específico
+
+En el segundo caso, `git restore` puede utilizarse para deshacer cambios en el directorio de trabajo o en el área de preparación.
+
+```shell
+git restore <file>
+git restore --staged <file>
+```
+
+Se puede indicar un commit específico desde el que restaurar el fichero
+
+```shell
+git restore --source=<commit> <file>
+```
+
 ##### git checkout a nivel de archivo
 
 En lugar de mover el HEAD del repositorio, lo que hace es llevar al directorio de trabajo el fichero al que hemos hecho checkout con el contenido que tenía en el commit especificado
 
 ```shell
 git checkout HEAD~1 README.md
+git restore --source=HEAD~1 README.md
 ```
 
 El resultado es que el fichero README.md en el area de trabajo vuelve a tener el contenido que tenía en el commit anterior al HEAD.
 
 ```shell
-git checkout HEAD~1 README.md --stage
+git checkout HEAD~1 README.md --staged
+git restore --source=HEAD~1 --staged README.md
 ```
 
 En este caso, el fichero README.md en el área de preparación vuelve a tener el contenido que tenía en el commit anterior al HEAD.
