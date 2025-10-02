@@ -102,7 +102,6 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
   - Taller: creación de un repositorio git "a mano"
 - Herramientas para preparar un buen commit en cualquier situación
   - Comprobar el repositorio. Git log
-  - Alias
   - Operaciones en la Staging Area (Index)
     - Añadir ficheros
     - Eliminar de la Staging Area (Index)
@@ -113,13 +112,12 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
   - git blame
   - Recapitulando: Git básico
 - Reescribiendo la historia
-
   - Advertencia
   - git command --amend
   - git checkout
   - git reset
 
-<!-- ## Día 3 (Miércoles 1 Octubre 2025)
+## Día 3 (Miércoles 1 Octubre 2025)
 
 - Reescribiendo la historia (2)
   - Evolución de git checkout: Nuevos comandos git switch y git restore
@@ -144,20 +142,24 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - Mover y renombrar ramas
   - Combinación de ramas: Merge y Rebase
     - git merge
+      - fast-forward
+      - three-way merge
     - git rebase
     - git cherry-pick
-    - Resolución de conflictos -->
+    - Resolución de conflictos
 
-## Día 4 (Jueves 2 Octubre 2025)
-
-<!-- - Trabajando en paralelo (continuación)
   - Repositorios remotos
     - Repositorios "bare"
     - Clonar repositorios: git clone
     - git remote
-    - git fetch
-    - git pull
     - git push
+    - git pull
+      - git fetch
+      - git merge / git rebase
+      - Conflictos
+
+<!-- ## Día 4 (Jueves 2 Octubre 2025)
+
     - Ramas remotas
-    - Seguimiento de ramas remotas
-    - Eliminar ramas remotas -->
+      - Seguimiento de ramas remotas
+      - Eliminar ramas remotas -->

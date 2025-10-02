@@ -109,6 +109,15 @@
       - [Tags](#tags)
         - [Operaciones con tags](#operaciones-con-tags)
       - [Patches](#patches)
+      - [Worktrees](#worktrees)
+        - [Casos de uso comunes](#casos-de-uso-comunes)
+        - [Operaciones básicas con worktrees](#operaciones-básicas-con-worktrees)
+        - [Comandos principales](#comandos-principales)
+        - [Ejemplo práctico](#ejemplo-práctico)
+        - [Limitaciones y consideraciones](#limitaciones-y-consideraciones)
+        - [Integración con IDEs](#integración-con-ides)
+        - [Comandos relacionados útiles](#comandos-relacionados-útiles)
+    - [FLUJOS DE TRABAJO (WORKFLOWS)](#flujos-de-trabajo-workflows)
       - [Workflows](#workflows)
         - [GitFlow](#gitflow)
         - [GitLab Flow (Environment Branching)](#gitlab-flow-environment-branching)
@@ -1488,6 +1497,10 @@ git config --global alias.ch git checkout
 git ch -b feature/branch
 ```
 
+Podemos crear alias más complejos, que incluyan varios comandos y parámetros en diversos puntos.
+
+Podemos ver información al respecto en [How to Simplify Your Git Commands with Git Aliases](https://www.freecodecamp.org/news/how-to-simplify-your-git-commands-with-git-aliases/)
+
 #### Operaciones en la Staging Area (Index)
 
 ##### Añadir ficheros
@@ -2619,6 +2632,151 @@ Para aplicar un patch se utiliza el comando `git apply`
 ```shell
 git apply 0001-Add-new-feature.patch
 ```
+
+#### Worktrees
+
+Los worktrees son una funcionalidad de Git que apareció en la versión 2.5 (2015) y permite tener múltiples working areas asociadas a un mismo repositorio. Cada worktree tiene su propia rama y su propio HEAD, pero comparten el mismo historial de commits.
+
+Esta característica es especialmente útil cuando necesitas trabajar en múltiples ramas simultáneamente sin tener que hacer constantemente `git checkout` o `git stash`.
+
+##### Casos de uso comunes
+
+- **Desarrollo paralelo**: Trabajar en una nueva feature mientras mantienes la posibilidad de hacer hotfixes en main
+- **Testing**: Probar diferentes versiones del código sin afectar tu trabajo actual
+- **Code review**: Revisar pull requests mientras continúas desarrollando
+- **Builds**: Mantener un worktree dedicado para builds de producción
+
+##### Operaciones básicas con worktrees
+
+Para crear un worktree se utiliza el comando `git worktree add`:
+
+```shell
+git worktree add <directorio> <rama>
+```
+
+Es una buena práctica que el directorio del worktree esté fuera del directorio del repositorio principal:
+
+```shell
+git worktree add ../feature/feature-xyz feature/feature-xyz
+```
+
+##### Comandos principales
+
+**Crear un nuevo worktree:**
+
+```shell
+# Crear worktree en directorio específico con rama existente
+git worktree add ../hotfix hotfix/bug-123
+
+# Crear worktree con nueva rama
+git worktree add -b nueva-feature ../feature main
+
+# Crear worktree temporal (se eliminará automáticamente)
+git worktree add --detach ../temp HEAD~2
+```
+
+**Listar worktrees existentes:**
+
+```shell
+git worktree list
+git worktree list --porcelain  # Formato más detallado
+```
+
+**Información de un worktree:**
+
+```shell
+# Muestra el path, la rama y el commit
+git worktree list -v
+```
+
+**Eliminar un worktree:**
+
+```shell
+# Desde el repositorio principal
+git worktree remove ../feature/feature-xyz
+
+# Forzar eliminación (incluso con cambios no guardados)
+git worktree remove --force ../feature/feature-xyz
+```
+
+**Limpiar worktrees eliminados manualmente:**
+
+```shell
+git worktree prune
+```
+
+**Mover un worktree:**
+
+```shell
+git worktree move ../old-location ../new-location
+```
+
+##### Ejemplo práctico
+
+```shell
+# Situación inicial: trabajando en feature-login
+git branch
+# * feature-login
+#   main
+
+# Llega un bug crítico que hay que arreglar en main
+# En lugar de hacer stash y checkout, creamos un worktree
+git worktree add ../hotfix main
+
+# Cambiamos al directorio del hotfix
+cd ../hotfix
+
+# Trabajamos en el hotfix
+echo "bug fix" >> bugfix.txt
+git add bugfix.txt
+git commit -m "Fix critical bug"
+
+# Subimos el hotfix
+git push origin main
+
+# Volvemos a nuestro trabajo original
+cd ../proyecto-principal
+
+# El worktree de hotfix ya no es necesario
+git worktree remove ../hotfix
+```
+
+##### Limitaciones y consideraciones
+
+- **No se pueden tener múltiples worktrees** en la misma rama (excepto en modo detached)
+- **Los hooks se comparten** entre todos los worktrees
+- **La configuración se comparte** entre todos los worktrees
+- **Los reflog son independientes** para cada worktree
+- **Cuidado con operaciones destructivas** como `git reset --hard` que afectan solo al worktree actual
+
+##### Integración con IDEs
+
+Muchos IDEs modernos soportan worktrees:
+
+- **VS Code**: Detecta automáticamente los worktrees y permite alternar entre ellos
+- **IntelliJ IDEA**: Soporte nativo para worktrees desde la versión 2021.2
+- **Vim/Neovim**: Plugins como `vim-fugitive` tienen soporte para worktrees
+
+##### Comandos relacionados útiles
+
+```shell
+# Ver en qué worktree estamos
+git rev-parse --show-toplevel
+
+# Ver información del repositorio principal
+git worktree list | head -1
+
+# Crear worktree temporal para builds
+git worktree add --detach ../build-temp v1.2.3
+cd ../build-temp
+npm run build
+cd ../proyecto-principal
+git worktree remove ../build-temp
+```
+
+Los worktrees son una herramienta poderosa que puede mejorar significativamente la productividad cuando se necesita trabajar con múltiples ramas de forma simultánea, evitando la necesidad de múltiples clones del repositorio.
+
+### FLUJOS DE TRABAJO (WORKFLOWS)
 
 #### Workflows
 
