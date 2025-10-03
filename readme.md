@@ -213,12 +213,10 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - Configuración y ejecución de un workflow
     - Secretos
 - GitLab
-  - Introducción
-  - Versiones
-  - Funcionalidades
-  - Arquitectura
-  - Usuarios
-  - Repositorios
-  - Ramas
+  - Similitudes y diferencias con GitHub
   - Merge Request
-  - Pipelines
+  - CI/CD en GitLab
+    - Introducción a CI/CD
+    - Configuración de un pipeline: stages y jobs
+    - Artefactos
+    - Variables

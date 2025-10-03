@@ -14,6 +14,7 @@
       - [Características de Git como SCV distribuido](#características-de-git-como-scv-distribuido)
     - [Instalación y configuración inicial](#instalación-y-configuración-inicial)
       - [Terminales](#terminales)
+        - [PowerShell](#powershell)
         - [El comando less](#el-comando-less)
       - [Configuración](#configuración)
     - [Referencias](#referencias)
@@ -382,16 +383,26 @@ En la instalación guiada pueden indicarse algunos elementos de configuración c
 
 Git es una herramienta de línea de comandos desarrollada inicialmente para el Bash de Linux. En Windows, Git se instala con un terminal propio que es una versión de MinTTY, un emulador de terminal para Windows que permite el uso de Bash, conocida como **GitBash**.
 
-Sin embargo, Git puede utilizarse en cualquier terminal de Windows, como el **cmd** o el **PowerShell**. Para ello, es necesario ajustar el path de Windows para que el ejecutable de Git esté disponible en todas lgit
-Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
+Sin embargo, Git puede utilizarse en cualquier terminal de Windows, como el **cmd** o el **PowerShell**. Para ello, es necesario ajustar el path de Windows para que el ejecutable de Git esté disponible en todas las terminales, lo que se puede hacer en la instalación de Git.
 
-````
+##### PowerShell
+
+El powershell de Windows es un terminal más potente que el cmd y que el propio GitBash, pero menos utilizado en el desarrollo de software. Puede configurarse para que funcione específicamente con Git añadiendo el plugin [posh-git](https://github.com/dahlbyk/posh-git).
+
+La web de [Git](https://git-scm.com/book/es/v2/Ap%C3%A9ndice-A%3A-Git-en-otros-entornos-Git-en-Powershell) proporciona una guía para la configuración de Git en Windows que incluye la configuración de las powershell.
+
+El primer paso es habilitar la ejecución de scripts en PowerShell con el comando, adecuado, según se trate de hacerlo para el usuario actual o para todos los usuarios del sistema.
+
+```shell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
+```
 
 El siguiente paso es instalar el módulo de posh-git con el comando
 
 ```shell
 Install-Module posh-git -Scope CurrentUser -Force
-````
+```
 
 Finalmente hay que añadir la importación del módulo en el fichero de configuración de PowerShell, que se encuentra en el directorio de usuario en el fichero `Microsoft.PowerShell_profile.ps1`. Para ello, se pueden utilizar los comandos
 
