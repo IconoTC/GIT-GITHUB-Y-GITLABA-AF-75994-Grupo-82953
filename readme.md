@@ -13,7 +13,7 @@
     - Quick Start
     - Aprendiendo a referenciar revisiones y paths
     - Herramientas para preparar un buen commit en cualquier situación
-    - Rescribiendo la historia
+    - Reescribiendo la historia
   - GUI’s (Integración con otras herramientas y entornos)
     - Github
     - GitLab
@@ -32,20 +32,19 @@
   - Publicando
   - Tags
   - Pull Request
-  - Liberaciones
-  - Github Actions
+  - Liberaciones (releases)
+- GitFlow
+  - Introducción
+  - Features
+  - Releases
+  - Hotfix
+- Git hooks
 - Github Actions
   - Introducción
   - Workflow. Partes y sintaxis
   - Configuración y ejecución de un workflow
   - Construir la imagen con Docker
   - Secretos
-- GitFlow
-  - Introducción
-  - Features
-  - Releases
-  - Hotfix
-  - Git hooks
 - GitLab
   - Introducción
   - Versiones
@@ -134,6 +133,7 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - git revert
     - git bisect
 - Trabajando en paralelo
+
   - Ramas
     - Crear y seleccionar
       - Crear desde referencia
@@ -148,18 +148,77 @@ Desarrollo del curso en la carpeta Oficial -> [repo](https://github.com/IconoTC/
     - git cherry-pick
     - Resolución de conflictos
 
-  - Repositorios remotos
-    - Repositorios "bare"
-    - Clonar repositorios: git clone
-    - git remote
-    - git push
-    - git pull
-      - git fetch
-      - git merge / git rebase
-      - Conflictos
+- Repositorios remotos
+  - Repositorios "bare"
+  - Clonar repositorios: git clone
+  - git remote
+  - git push
+  - git pull
+    - git fetch
+    - git merge / git rebase
+    - Conflictos
 
-<!-- ## Día 4 (Jueves 2 Octubre 2025)
+## Día 4 (Jueves 2 Octubre 2025)
 
-    - Ramas remotas
-      - Seguimiento de ramas remotas
-      - Eliminar ramas remotas -->
+- Repositorios remotos (continuación)
+
+  - Ramas remotas
+    - Seguimiento de ramas remotas (tracking branches)
+    - Crear ramas locales a partir de ramas remotas: fetch + checkout / switch -c
+    - Subir ramas locales a ramas remotas
+    - Eliminar ramas remotas
+  - Pull requests (GitHub) / Merge requests (GitLab)
+    - Flujo de trabajo típico
+    - Revisión de código
+    - Resolución de conflictos en remoto
+    - Buenas prácticas:
+      - Actualizar la rama con la rama main antes de hacer el merge
+      - Resolución de conflictos en local
+      - Eliminar la rama una vez hecho el merge
+  - Etiquetas (tags)
+    - Tags anotadas y tags ligeros
+    - Crear, listar, eliminar
+
+- Flujos de trabajo (workflows)
+
+  - Git Flow
+  - GitLab Flow
+  - GitHub Flow
+    - Ship-Show-Ask
+
+- GitHub
+  - Hosting de Repositorios
+    - repositorios públicos y privados; ramas y remotos: push y pull (v.s.)
+    - tags y releases
+    - forks
+  - Colaboración
+    - pull requests: revisión de código y comentarios (v.s.)
+    - PR desde ramas y forks
+    - Proyectos
+      - Tableros (Boards)
+      - issues y proyectos; milestones
+    - Wikis
+    - Gists
+  - CI/CD
+    - GitHub Pages
+
+## Día 5 (Jueves 2 Octubre 2025)
+
+- GitHub (continuación)
+  - GitHub Pages
+  - Integración continua / Entrega continua (CI/CD)
+  - GitHub Actions
+    - Introducción
+    - Workflow. Partes y sintaxis
+    - Configuración y ejecución de un workflow
+    - Secretos
+- GitLab
+  - Introducción
+  - Versiones
+  - Funcionalidades
+  - Arquitectura
+  - Usuarios
+  - Repositorios
+  - Ramas
+  - Merge Request
+  - Pipelines

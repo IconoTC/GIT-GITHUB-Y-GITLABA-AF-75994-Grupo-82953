@@ -117,6 +117,27 @@
         - [Limitaciones y consideraciones](#limitaciones-y-consideraciones)
         - [Integración con IDEs](#integración-con-ides)
         - [Comandos relacionados útiles](#comandos-relacionados-útiles)
+    - [Liberaciones (releases)](#liberaciones-releases)
+      - [¿Qué son las releases?](#qué-son-las-releases)
+      - [Tipos de releases](#tipos-de-releases)
+      - [Relación entre tags y releases](#relación-entre-tags-y-releases)
+      - [Crear una release en GitHub](#crear-una-release-en-github)
+        - [Desde la interfaz web](#desde-la-interfaz-web)
+        - [Desde línea de comandos con GitHub CLI](#desde-línea-de-comandos-con-github-cli)
+      - [Buenas prácticas para releases](#buenas-prácticas-para-releases)
+        - [Versionado semántico](#versionado-semántico)
+        - [Notas de la versión (Release Notes)](#notas-de-la-versión-release-notes)
+        - [Automatización con Conventional Commits](#automatización-con-conventional-commits)
+      - [Flujo de trabajo para releases](#flujo-de-trabajo-para-releases)
+        - [1. Preparación de la release](#1-preparación-de-la-release)
+        - [2. Creación del tag y release](#2-creación-del-tag-y-release)
+        - [3. Post-release](#3-post-release)
+      - [Automatización con GitHub Actions](#automatización-con-github-actions)
+      - [Gestión de releases en diferentes plataformas](#gestión-de-releases-en-diferentes-plataformas)
+        - [GitHub](#github)
+        - [GitLab](#gitlab)
+        - [Otras herramientas](#otras-herramientas)
+      - [Comandos útiles para gestión de releases](#comandos-útiles-para-gestión-de-releases)
     - [FLUJOS DE TRABAJO (WORKFLOWS)](#flujos-de-trabajo-workflows)
       - [Workflows](#workflows)
         - [GitFlow](#gitflow)
@@ -2775,6 +2796,280 @@ git worktree remove ../build-temp
 ```
 
 Los worktrees son una herramienta poderosa que puede mejorar significativamente la productividad cuando se necesita trabajar con múltiples ramas de forma simultánea, evitando la necesidad de múltiples clones del repositorio.
+
+### Liberaciones (releases)
+
+Las **releases** (liberaciones) son versiones oficiales del software que se publican para los usuarios finales. Representan puntos específicos en el desarrollo del proyecto donde el código es considerado estable y listo para su uso en producción.
+
+#### ¿Qué son las releases?
+
+Una release es una versión empaquetada y etiquetada del software que incluye:
+
+- **Código estable**: versión del software que ha pasado todas las pruebas
+- **Documentación**: notas de la versión, changelog, documentación de instalación
+- **Assets**: archivos binarios compilados, instaladores, paquetes
+- **Metadatos**: información sobre la versión, fecha de lanzamiento, autor
+
+#### Tipos de releases
+
+Siguiendo el estándar de **Versionado Semántico** (SemVer), las releases se clasifican en:
+
+- **Major releases** (X.0.0): Cambios incompatibles con versiones anteriores
+- **Minor releases** (1.X.0): Nueva funcionalidad compatible con versiones anteriores  
+- **Patch releases** (1.1.X): Correcciones de bugs compatible con versiones anteriores
+- **Pre-releases**: Versiones de prueba (alpha, beta, rc)
+
+```shell
+# Ejemplos de versionado semántico
+v1.0.0     # Primera versión estable
+v1.1.0     # Nueva funcionalidad
+v1.1.1     # Corrección de bugs
+v2.0.0     # Cambios incompatibles
+v2.0.0-beta.1  # Pre-release
+```
+
+#### Relación entre tags y releases
+
+Las releases están estrechamente vinculadas con los **tags** de Git:
+
+- **Tag**: Marca un commit específico con un nombre de versión
+- **Release**: Presentación pública del tag con documentación y assets
+
+```shell
+# Crear un tag anotado para una release
+git tag -a v1.2.0 -m "Release version 1.2.0 - Nueva funcionalidad de exportación"
+
+# Subir el tag al repositorio remoto
+git push origin v1.2.0
+
+# Ver información del tag
+git show v1.2.0
+```
+
+#### Crear una release en GitHub
+
+##### Desde la interfaz web
+
+1. **Navegar a la sección Releases**
+   - Ir al repositorio en GitHub
+   - Hacer clic en "Releases" en la barra lateral derecha
+
+2. **Crear nueva release**
+   - Hacer clic en "Create a new release"
+   - Seleccionar un tag existente o crear uno nuevo
+
+3. **Completar la información**
+   - **Tag version**: Nombre del tag (ej: v1.2.0)
+   - **Release title**: Título descriptivo de la release
+   - **Description**: Notas de la versión detalladas
+   - **Assets**: Archivos binarios adicionales (opcional)
+
+4. **Opciones adicionales**
+   - **Pre-release**: Marcar si es una versión de prueba
+   - **Latest release**: Automáticamente marcada para la versión más reciente
+   - **Generate release notes**: GitHub puede generar notas automáticamente
+
+##### Desde línea de comandos con GitHub CLI
+
+```shell
+# Instalar GitHub CLI primero
+# Crear una release
+gh release create v1.2.0 --title "Version 1.2.0" --notes "Descripción de los cambios"
+
+# Crear release con archivos adjuntos
+gh release create v1.2.0 --title "Version 1.2.0" --notes-file CHANGELOG.md ./dist/*
+
+# Crear pre-release
+gh release create v1.2.0-beta --title "Version 1.2.0 Beta" --prerelease
+```
+
+#### Buenas prácticas para releases
+
+##### Versionado semántico
+
+```shell
+# Estructura: MAJOR.MINOR.PATCH
+# 1.0.0 → 1.0.1 (patch: corrección de bugs)
+# 1.0.1 → 1.1.0 (minor: nueva funcionalidad)
+# 1.1.0 → 2.0.0 (major: cambios incompatibles)
+```
+
+##### Notas de la versión (Release Notes)
+
+Las notas de la versión deben incluir:
+
+```markdown
+## What's Changed
+### 🚀 New Features
+- Implementación de exportación a PDF
+- Nuevo dashboard de analytics
+
+### 🐛 Bug Fixes  
+- Corregido error en el login con espacios
+- Solucionado problema de memoria en procesamiento
+
+### 🔧 Improvements
+- Mejorado rendimiento de búsqueda (50% más rápido)
+- Actualizada documentación de API
+
+### ⚠️ Breaking Changes
+- Cambio en estructura de respuesta de API v2
+- Removido soporte para Node.js < 16
+
+### 📦 Dependencies
+- Actualizado React a v18.2.0
+- Añadido soporte para TypeScript 5.0
+```
+
+##### Automatización con Conventional Commits
+
+```shell
+# Formato de commits convencionales
+feat: añadir funcionalidad de exportación PDF
+fix: corregir error en validación de formularios  
+docs: actualizar documentación de API
+chore: actualizar dependencias
+break: cambiar estructura de respuesta API
+
+# Generar release notes automáticamente
+git log --oneline v1.1.0..HEAD --grep="feat\|fix\|break"
+```
+
+#### Flujo de trabajo para releases
+
+##### 1. Preparación de la release
+
+```shell
+# 1. Crear rama de release
+git checkout -b release/v1.2.0
+
+# 2. Actualizar versión en archivos del proyecto
+# package.json, version.py, etc.
+
+# 3. Actualizar CHANGELOG.md
+# 4. Ejecutar tests
+npm test
+
+# 5. Build de producción
+npm run build
+
+# 6. Commit de preparación
+git add .
+git commit -m "chore: prepare release v1.2.0"
+```
+
+##### 2. Creación del tag y release
+
+```shell
+# 1. Merge a main
+git checkout main
+git merge release/v1.2.0
+
+# 2. Crear tag anotado
+git tag -a v1.2.0 -m "Release v1.2.0 - Nueva funcionalidad de exportación"
+
+# 3. Push del tag
+git push origin main
+git push origin v1.2.0
+
+# 4. Crear release en GitHub (manual o automatizada)
+```
+
+##### 3. Post-release
+
+```shell
+# 1. Merge de vuelta a develop
+git checkout develop  
+git merge main
+
+# 2. Limpiar rama de release
+git branch -d release/v1.2.0
+
+# 3. Notificar al equipo y usuarios
+```
+
+#### Automatización con GitHub Actions
+
+```yaml
+# .github/workflows/release.yml
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Build project
+        run: |
+          npm ci
+          npm run build
+          
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+          body: |
+            ## Changes
+            - Auto-generated release from tag ${{ github.ref }}
+```
+
+#### Gestión de releases en diferentes plataformas
+
+##### GitHub
+
+- Interfaz web intuitiva
+- Integración con GitHub Actions
+- Assets automáticos desde releases
+
+##### GitLab
+
+```shell
+# Crear release con GitLab CLI
+glab release create v1.2.0 --name "Version 1.2.0" --notes "Release notes"
+```
+
+##### Otras herramientas
+
+- **semantic-release**: Automatización completa del proceso
+- **standard-version**: Generación automática de CHANGELOG
+- **release-please**: Herramienta de Google para automatizar releases
+
+#### Comandos útiles para gestión de releases
+
+```shell
+# Ver todas las releases/tags
+git tag -l
+git tag -l "v1.*"
+
+# Ver información detallada de una release
+git show v1.2.0
+
+# Comparar dos releases
+git diff v1.1.0..v1.2.0
+
+# Ver commits entre releases
+git log v1.1.0..v1.2.0 --oneline
+
+# Descargar una release específica
+git checkout v1.2.0
+
+# Eliminar tag local y remoto
+git tag -d v1.2.0
+git push origin --delete v1.2.0
+```
+
+Las releases son fundamentales para la gestión profesional de proyectos de software, proporcionando puntos de referencia claros para el desarrollo, deployment y mantenimiento del código.
 
 ### FLUJOS DE TRABAJO (WORKFLOWS)
 
